@@ -13,7 +13,9 @@ abstract: |
   To be able to customize the trade-off between statistical efficiency and robustness,
     we could consider *a trimmed modification of the Harrell-Davis quantile estimator*.
   In this approach, we discard order statistics with low weights according to
-    the highest density interval of the beta distribution.
+    the highest density interval of the beta distribution.  
+
+  **Keywords:** quantile estimation, robust statistics, Harrell-Davis quantile estimator.
 bibliography: references.bib
 biblio-style: alphabetic
 biblatexoptions: [sorting=none]
@@ -86,7 +88,7 @@ The Harrell-Davis quantile estimator is suggested in [@david2003], [@grissom2005
 In [@yoshizawa1985], asymptotic equivalence for the traditional sample median and the Harrell–Davis median estimator is shown.
 
 The Harrell-Davis quantile estimator shows decent statistical efficiency in the case of light-tailed distributions:
-  its estimations are much more precise than estimations of the traditional quantile estimators.
+  its estimations are much more accurate than estimations of the traditional quantile estimators.
 However, the improved efficiency has a price: $Q_{\operatorname{HD}}$ is not robust.
 Since the estimation is a weighted sum of all order statistics with positive weights,
   a single corrupted element may spoil all the quantile estimations, including the median.
@@ -95,21 +97,21 @@ It may become a severe drawback in the case of heavy-tailed distributions in whi
 In such cases, we use the median instead of the mean as a measure of central tendency
   because of its robustness.
 Indeed, if we estimate the median using the traditional quantile estimators like $Q_{\operatorname{HF7}}$,
-  its asymptotical breakdown point is 0.5.
+  its asymptotic breakdown point is 0.5.
 Unfortunately, if we switch to $Q_{\operatorname{HD}}$, the breakdown point becomes zero
   so that we completely lose the median robustness.
 
 Another severe drawback of $Q_{\operatorname{HD}}$ is its computational complexity.
 If we have a sorted array of numbers,
   a traditional quantile estimation could be computed using $O(1)$ simple operations.
-When a sample is unsorted,
-  there are approaches that allows getting an order statistics
-  using $O(\log(n))$ operations (e.g., see [@alexandrescu2017]).
-If we estimate the quantiles using $Q_{\operatorname{HD}}$, we need $O(n)$ operations.
+For an unsorted sample,
+  there are approaches that allows getting an order statistic
+  using $O(n)$ operations (e.g., see [@alexandrescu2017]).
+If we estimate the quantiles using $Q_{\operatorname{HD}}$, we need $O(n)$ operations for a sorted array.
 Moreover, these operations involve computation of $I_x(\alpha, \beta)$ values
   which are pretty expensive from the computational point of view.
-If we want to estimate millions of quantile estimations,
-  $Q_{\operatorname{HD}}$ may have a noticeable impact on the application performance.
+Estimating millions of quantiles using $Q_{\operatorname{HD}}$
+  may have a noticeable impact on the application performance.
   
 Alternatively, we could consider
   the Sfakianakis-Verginis qunatile estimator (see [@sfakianakis2008]) or
@@ -206,7 +208,7 @@ We denote $Q_{\operatorname{THD}}$ with such a $D$ value as $Q_{\operatorname{TH
 In most cases, it gives an acceptable trade-off between the statistical efficiency and the robustness level.
 Also, $Q_{\operatorname{THD-SQRT}}$ has a practically reasonable computational complexity:
   $O(\sqrt{n})$ instead of $O(n)$ for $Q_{\operatorname{HD}}$.
-For example, if $n=10000$, we have to process only 100 sample elements and calculate 101 values of $I_x(\alpha, \beta)$.
+For example, if $n=10\,000$, we have to process only 100 sample elements and calculate 101 values of $I_x(\alpha, \beta)$.
 
 **An example**
 Let's say we have the following sample:
@@ -220,18 +222,18 @@ The last element $x_{10}$ is an outlier.
 The weight coefficient for $Q_{\operatorname{HD}}$ an $Q_{\operatorname{THD-SQRT}}$
   are presented in the following table:
 
-| $i$ | $x_i$      | $W_{\operatorname{HD},i}$ | $W_{\operatorname{THD-SQRT},i}$ |
-|----:|-----------:|--------------------------:|--------------------------------:|
-|   1 |     -0.565 |                    0.0005 |                          0      |
-|   2 |     -0.106 |                    0.0146 |                          0      |
-|   3 |     -0.095 |                    0.0727 |                          0      |
-|   4 |      0.363 |                    0.1684 |                          0.1554 |
-|   5 |      0.404 |                    0.2438 |                          0.3446 |
-|   6 |      0.633 |                    0.2438 |                          0.3446 |
-|   7 |      1.371 |                    0.1684 |                          0.1554 |
-|   8 |      1.512 |                    0.0727 |                          0      |
-|   9 |      2.018 |                    0.0146 |                          0      |
-|  10 | 100000.000 |                    0.0005 |                          0      |
+| $i$ | $x_i$          | $W_{\operatorname{HD},i}$ | $W_{\operatorname{THD-SQRT},i}$ |
+|----:|---------------:|--------------------------:|--------------------------------:|
+|   1 |         -0.565 |                    0.0005 |                          0      |
+|   2 |         -0.106 |                    0.0146 |                          0      |
+|   3 |         -0.095 |                    0.0727 |                          0      |
+|   4 |          0.363 |                    0.1684 |                          0.1554 |
+|   5 |          0.404 |                    0.2438 |                          0.3446 |
+|   6 |          0.633 |                    0.2438 |                          0.3446 |
+|   7 |          1.371 |                    0.1684 |                          0.1554 |
+|   8 |          1.512 |                    0.0727 |                          0      |
+|   9 |          2.018 |                    0.0146 |                          0      |
+|  10 | $100\,000.000$ |                    0.0005 |                          0      |
 
 Here are the corresponding quantile estimations:
 
@@ -351,7 +353,7 @@ For our simulation, we use $\varepsilon = 0.01,\; \sigma = 1,\; c = 1\,000\,000$
 We generate $10\,000$ samples of size 7 randomly taken from the considered distribution.
 For each sample, we estimate the median using
   $Q_{\operatorname{HF7}}$, $Q_{\operatorname{HD}}$, and $Q_{\operatorname{THD-SQRT}}$.
-Thus, we have $10\,000$ of median estimations for each estimator.
+Thus, we have $10\,000$ median estimations for each estimator.
 Next, we evaluate lower and higher percentiles for each group of estimations.
 The results are presented in the following table:
 
@@ -425,7 +427,7 @@ As we can see, $Q_{\operatorname{THD-SQRT}}$ is not so efficient as $Q_{\operato
   in the case of light-tailed distributions.
 However, in the case of heavy-tailed distributions,
   $Q_{\operatorname{THD-SQRT}}$ has better efficiency than $Q_{\operatorname{HD}}$
-  because estimations of $Q_{\operatorname{HD}}$ are corrupted by outliers.
+  because the estimations of $Q_{\operatorname{HD}}$ are corrupted by outliers.
 
 # Conclusion
 
@@ -443,6 +445,10 @@ By customizing the width $D$ of the highest density interval, we could set the d
   according to the research goals.
 Also, $Q_{\operatorname{THD}}$ has better computational efficiency than $Q_{\operatorname{HD}}$
   which makes it a faster option in practical applications.
+  
+# Disclosure statement
+
+The author reports there are no competing interests to declare.
   
 # Acknowledgments
 
