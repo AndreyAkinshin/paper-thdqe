@@ -1,6 +1,9 @@
 library(ggplot2)
 library(evd)
+library(EnvStats)
 library(latex2exp)
+library(knitr)
+library(Hmisc)
 
 source("thdqe.R")
 
@@ -113,24 +116,28 @@ hdqe <- function(x, probs) as.numeric(hdquantile(x, probs))
 thdqe <- function(x, probs) as.numeric(thdquantile(x, probs))
 
 simulation1 <- function() {
-  gen <- function() {
-    x <- rcnorm(7)
-    c(
-      hf7 = hf7qe(x, 0.5),
-      hd = hdqe(x, 0.5),
-      thd = thdqe(x, 0.5))
+  run <- function(rnd) {
+    gen <- function() {
+      x <- rnd()
+      c(
+        hf7 = hf7qe(x, 0.5),
+        hd = hdqe(x, 0.5),
+        thd = thdqe(x, 0.5))
+    }
+    set.seed(1729)
+    df.raw <- data.frame(t(replicate(10000, gen())))
+    probs <- c(seq(0, 0.04, by = 0.01), seq(0.96, 1, by = 0.01))
+    df <- data.frame(
+      quantile = probs,
+      HF7 = quantile(df.raw$hf7, probs),
+      HD = quantile(df.raw$hd, probs),
+      "THD-SQRT" = quantile(df.raw$thd, probs)
+    )
+    rownames(df) <- c()
+    print(kable(df, col.names = c("quantile", "HF7", "HD", "THD-SQRT")))
   }
-  set.seed(1729)
-  df.raw <- data.frame(t(replicate(10000, gen())))
-  probs <- c(seq(0, 0.05, by = 0.01), seq(0.95, 1, by = 0.01))
-  df <- data.frame(
-    quantile = probs,
-    HF7 = quantile(df.raw$hf7, probs),
-    HD = quantile(df.raw$hd, probs),
-    "THD-SQRT" = quantile(df.raw$thd, probs)
-  )
-  rownames(df) <- c()
-  print(kable(df, col.names = c("quantile", "HF7", "HD", "THD-SQRT")))
+  run(function(n) rcnorm(7))
+  run(function(n) rfrechet(7))
 }
 
 simulation2 <- function() {
