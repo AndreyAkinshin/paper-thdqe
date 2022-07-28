@@ -16,19 +16,26 @@ abstract: |
     the highest density interval of the beta distribution.  
 
   **Keywords:** quantile estimation, robust statistics, Harrell-Davis quantile estimator.
+author-meta: Andrey Akinshin
+lang: en-US
 bibliography: references.bib
 biblio-style: alphabetic
-biblatexoptions: [sorting=none]
+biblatexoptions: [sorting=anyt]
 link-citations: true
+colorlinks: true
+linkcolor: linkcolor
+citecolor: citecolor
+urlcolor: urlcolor
 output:
   bookdown::pdf_document2:
     citation_package: biblatex
     keep_tex: true
-    extra_dependencies: ["amsmath", "float"]
+    extra_dependencies: ["amsmath", "float", "csquotes"]
     toc: false
     number_sections: false
     includes:
       in_header: "preamble.tex"
+      before_body: "before_body.tex"
 ---
 
 ```{r setup, include=FALSE}
@@ -169,6 +176,8 @@ It gives us the truncated beta distribution $\operatorname{TBeta}(\alpha, \beta,
 ```{r tbeta, fig.cap="Truncated beta distribution B(5.5, 5.5) probability density function", fig.height=4.7}
 draw.beta(T)
 ```
+
+\clearpage
 
 We know the CDF for $\operatorname{Beta}(\alpha, \beta)$ which is used in $Q_{\operatorname{HD}}$:
   $F_{\operatorname{HD}}(x) = I_x(\alpha, \beta)$.

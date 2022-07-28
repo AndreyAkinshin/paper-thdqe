@@ -1,7 +1,8 @@
+% A better link color palette based on https://jfly.uni-koeln.de/color/
 \usepackage{hyperref}
-\definecolor{linkcolor}{rgb}{0.9,0,0}
-\definecolor{citecolor}{rgb}{0,0.6,0}
-\definecolor{urlcolor}{rgb}{0,0,1}
+\definecolor{linkcolor}{HTML}{D55E00}
+\definecolor{citecolor}{HTML}{009E73}
+\definecolor{urlcolor}{HTML}{0072B2}
 \hypersetup{
     colorlinks,
     linkcolor={linkcolor},
@@ -9,5 +10,21 @@
     urlcolor={urlcolor}
 }
 
+% Adjust source code color palette
+\makeatletter
+\@ifundefined{DecValTok}{}{
+  \renewcommand{\DecValTok}[1]{\textcolor[HTML]{009E73}{#1}}
+  \renewcommand{\FloatTok}[1]{\textcolor[HTML]{009E73}{#1}}
+  \renewcommand{\ConstantTok}[1]{\textcolor[HTML]{009E73}{#1}}
+  \renewcommand{\ControlFlowTok}[1]{\textcolor[HTML]{0072B2}{\textbf{#1}}}
+  \renewcommand{\OtherTok}[1]{\textcolor[HTML]{000000}{#1}}
+  \renewcommand{\CommentTok}[1]{\textcolor[HTML]{999999}{\textit{#1}}}
+  \renewcommand{\AttributeTok}[1]{\textcolor[HTML]{CC79A7}{#1}}
+  \renewcommand{\FunctionTok}[1]{\textcolor[HTML]{56B4E9}{#1}}
+}
+\makeatother
+
 \usepackage{caption}
 \captionsetup{width=14cm}
+
+\usepackage[absolute]{textpos}
