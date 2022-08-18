@@ -61,7 +61,7 @@ In this paper, Rob J. Hyndman and Yanan Fan describe nine types of traditional q
 The most popular approach in this taxonomy is Type 7 which is used by default in R, Julia, NumPy, and Excel:
 
 $$
-Q_{\operatorname{HF7}}(p) = x_{\lfloor h \rfloor}+(h-\lfloor h \rfloor)(x_{\lfloor h \rfloor+1})-x_{\lfloor h \rfloor},
+Q_{\operatorname{HF7}}(p) = x_{\lfloor h \rfloor}+(h-\lfloor h \rfloor)(x_{\lceil h \rceil}-x_{\lfloor h \rfloor}),
 \quad h = (n-1)p+1.
 $$
 
