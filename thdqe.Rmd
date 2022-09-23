@@ -553,6 +553,8 @@ thdquantile <- function(x, probs, width = 1 / sqrt(length(x)))
   n <- length(x)
   if (n == 0) return(NA)
   if (n == 1) return(x)
+  if (p == 0) return(min(x))
+  if (p == 1) return(max(x))
 
   x <- sort(x)
   a <- (n + 1) * p

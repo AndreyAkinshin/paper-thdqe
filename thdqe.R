@@ -27,6 +27,8 @@ thdquantile <- function(x, probs, width = 1 / sqrt(length(x))) sapply(probs, fun
   n <- length(x)
   if (n == 0) return(NA)
   if (n == 1) return(x)
+  if (p == 0) return(min(x))
+  if (p == 1) return(max(x))
   x <- sort(x)
   a <- (n + 1) * p
   b <- (n + 1) * (1 - p)
